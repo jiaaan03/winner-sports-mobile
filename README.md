@@ -1,16 +1,12 @@
-# winner_sports
+Tugas 7
+1. Di Flutter itu semuanya adalah widget seperti text, tombol, dan juga layout.  hubungan parent-childnya itu singkatnya induk bertugas untuk mengatur layout, data, dan posisi. Sedangkan anak/child itu bertugas untuk menampilkan dirinya sendiri sesuai dengan perintah yang diberikan oleh induknya.
 
-A new Flutter project.
+2. Ada MyApp yang membungkus MaterialApp sebagai pengatur tema aplikasi. MyHomePage menggunakan Scaffold sebagai kerangka dasar untuk menyediakan AppBar dan body. Di dalam body inilah kita memakai Column sebagai rak penyusun utama untuk menata widget secara vertikal. Rak ini berisi sebuah Row yang menjajarkan tiga InfoCard yaitu NPM, nama. Lalu, diikuti oleh GridView yang menampilkan tiga ItemCard berwarna (yang berfungsi sebagai tombol menu utama). 
 
-## Getting Started
+3. MaterialApp berfungsi untuk menyediakan semua infrastruktur penting seperti menetapkan tema (theme) global yang jadi sama untuk semua widget di bawahnya, dan juga menyediakan navigator yang mengelola tumpukan halaman sehingga bisa berpindah antar layar. Alasan MaterialApp harus menjadi widget root adalah agar semua widget di bawahnya (seperti Scaffold atau Dialog) bisa melihat dan mengakses layanan ini. Tanpa MaterialApp, widget lain akan kebingungan mencari tema atau cara bernavigasi
 
-This project is a starting point for a Flutter application.
+4. Perbedaan utamanya terletak pada memori/state. StatelessWidget itu tidak punya memori internal, dan hanya menampilkan data statis yang dioper dari induknya, tidak bisa berubah dari dalam. Sebaliknya, StatefulWidget itu dinamis, memiliki State (memori internal) yang bisa berubah-ubah seiring waktu. Kapanpun data di dalam State-nya berubah (misalnya karena klik tombol), ia bisa memicu rebuild (gambar ulang) dirinya sendiri dengan memanggil setState(). Pilihan penggunaannya sederhana: pilih StatelessWidget saat UI-nya diam dan hanya bergantung pada data dari luar. Pilih StatefulWidget saat perlu mengelola data yang berubah secara internal, seperti melacak apa yang diketik pengguna di TextField, dan mengelola status Checkbox
 
-A few resources to get you started if this is your first Flutter project:
+5. BuildContext sebagai alamat dari sebuah widget di dalam widget tree yang sangat besar. BuildContext ini penting karena ia adalah satu-satunya koneksi bagi widget untuk berinteraksi dengan widget lain yang ada di atasnya. penggunaannya gini misal, ScaffoldMessenger.of(context) untuk mencari Scaffold terdekat. Tanpa context, widget akan terisolasi, buta arah, dan tidak tahu apa-apa soal tema, navigator, atau widget lain di luar dirinya sendiri.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+6. Hot reload adalah fitur andalan Flutter, fungsinya bisa menyuntikkan kode baru  ke aplikasi yang sedang berjalan tanpa menghilangkan State. Sedangkan, Hot restart akan memulai ulang seluruh aplikasi dari awal. Semua State akan hancur dan kembali ke nilai default-nya. Ini jauh lebih lambat daripada hot reload (tapi masih lebih cepat dari full build).
