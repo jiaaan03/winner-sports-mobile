@@ -196,7 +196,7 @@ class _ProductsFormPageState extends State<ProductsFormPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       decoration: InputDecoration(
-                        hintText: "URL Thumbnail (opsional)",
+                        hintText: "URL Thumbnail",
                         labelText: "URL Thumbnail",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -206,6 +206,15 @@ class _ProductsFormPageState extends State<ProductsFormPage> {
                         setState(() {
                           _thumbnail = value!;
                         });
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return "URL Thumbnail tidak boleh kosong!";
+                        }
+                        if (!(Uri.tryParse(value)?.isAbsolute ?? false)) {
+                          return "Format URL tidak valid (contoh: https://...)";
+                        }
+                        return null;
                       },
                     ),
                   ),
