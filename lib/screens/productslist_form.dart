@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:winner_sports/widgets/left_drawer.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:winner_sports/screens/menu.dart';
+
 // TODO: Impor drawer yang sudah dibuat sebelumnya
 
 class ProductsFormPage extends StatefulWidget {
@@ -39,6 +44,7 @@ class _ProductsFormPageState extends State<ProductsFormPage> {
   ];
     @override
     Widget build(BuildContext context) {
+        final request = context.watch<CookieRequest>();
         return Scaffold(
           appBar: AppBar(
             title: const Center(
@@ -46,7 +52,7 @@ class _ProductsFormPageState extends State<ProductsFormPage> {
                 'Form Tambah Produk',
               ),
             ),
-            backgroundColor: Colors.indigo,
+            backgroundColor: Color.fromARGB(255, 156, 14, 116),
             foregroundColor: Colors.white,
           ),
           // TODO: Tambahkan drawer yang sudah dibuat di sini
@@ -240,43 +246,38 @@ class _ProductsFormPageState extends State<ProductsFormPage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.indigo),
+                              MaterialStateProperty.all(Color.fromARGB(255, 156, 14, 116)),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Produk berhasil disimpan!'),
-                                  content: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Nama: $_name'),
-                                          Text('Harga: $_price'),
-                                          Text('Deskripsi: $_description'),
-                                          Text('Kategori: $_category'),
-                                          Text('Merek: $_brand'),
-                                          Text('Thumbnail: $_thumbnail'),
-                                          Text(
-                                              'Unggulan: ${_isFeatured ? "Ya" : "Tidak"}'),
-                                      ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text('OK'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        _formKey.currentState!.reset();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
+                            final response = await request.postJson(
+                              "http://127.0.0.1:8000/create-flutter/",
+                              jsonEncode({
+                                "name": _name,
+                                "description": _description,
+                                "thumbnail": _thumbnail,
+                                "category": _category,
+                                "is_featured": _isFeatured,
+                              }),
                             );
+                            if (context.mounted) {
+                              if (response['status'] == 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("News successfully saved!"),
+                                ));
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MyHomePage()),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("Something went wrong, please try again."),
+                                ));
+                              }
+    }
                           }
                         },
                         child: const Text(

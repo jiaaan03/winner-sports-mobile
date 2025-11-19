@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:winner_sports/screens/menu.dart';
 import 'package:winner_sports/screens/productslist_form.dart';
+import 'package:winner_sports/screens/products_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -12,7 +13,7 @@ class LeftDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color.fromARGB(255, 156, 14, 116),
             ),
             child: Column(
               children: [
@@ -67,12 +68,17 @@ class LeftDrawer extends StatelessWidget {
                   ));
             },
           ),
+          // Add this ListTile in your drawer
           ListTile(
-            leading: const Icon(Icons.article),
-            title: const Text('View Products'),
-            // Bagian redirection ke NewsListPage
-            onTap: () {
-            }
+              leading: const Icon(Icons.add_reaction_rounded),
+              title: const Text('Products List'),
+              onTap: () {
+                  // Route to products list page
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProductsEntryListPage()),
+                  );
+              },
           ),
         ],
       ),
